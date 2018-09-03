@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Google Books API in JS</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script> 
+	<script>
+	
+	
+	//window.onload = function(){
+   // var button = document.getElementById('search');
+   // button.click();
+	
+}</script>
+	<style type="text/css">
+		body {
+			margin: 0 auto;
+			width: 960px;
+		}
+	</style>
+</head>
+<body>
+	
+	<div id="list"></div>
+    
+    <script type="text/javascript">
+	function getUrlVars() {
+var vars = {};
+var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+vars[key] = value;
+});
+return vars;
+}
+    var list = document.getElementById("list");
+		var sample=getUrlVars()["sample"];
+		if(sample=="title")
+		{
+        var url = "http://www.omdbapi.com/?s=";
+		var input=getUrlVars()["title"];
+		var year=getUrlVars()["year"];
+		var type=getUrlVars()["type"];
+		}
+		else
+		{
+		var urli = "http://www.omdbapi.com/?i=";
+		var inputi=getUrlVars()["imdb"];
+		}
+        //var input = document.getElementById("input");
+		
+		
+        //var button= document.getElementById("search");
+        var url1="&apikey=30b8c90d";
+        var xhttp;
+        if(window.XMLHttpRequest){
+         xhttp = new XMLHttpRequest();   
+        } else {
+            xhttp = new ActiveXObject("Microsoft.XMLHttp");
+        }
+        
+       // button.addEventListener('click', function(e){
+        //  e.preventDefault();
+          if(sample=="title")
+            xhttp.open("GET", url + input + url1 + "&y=" + year + "&type=" + type);
+			else
+			xhttp.open("GET", urli + inputi + url1);
+            xhttp.send();
+            
+      //  });
+        
+        xhttp.onreadystatechange = function() {
+            if(xhttp.readyState === 4 && xhttp.status === 200){
+                var obj = JSON.parse(xhttp.responseText);
+                
+                var items = "";
+                
+                console.log(obj);
+                  
+                for(var i in obj.Search){
+                    items += "<article>" + "<h1>" + obj.Search[i].Title + "</h1>" +
+                             "<p>Year: " + obj.Search[i].Year + "</p>" + 
+                             "<p>Type: " + obj.Search[i].Type + "</p>" +
+                             "<img src=" + obj.Search[i].Poster + ">" + 
+                             "</article>";
+                }
+                list.innerHTML = items;
+            }
+        }
+    </script>
+</body>
+</html>
